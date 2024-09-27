@@ -53,7 +53,6 @@ fb_ads <-
   read_csv("data/fb_ads.csv") 
 fb_ads
 
-# Get the number of candidates in the dataset
 num_candidates <- nrow(fb_ads)
 cat("There are", num_candidates, "candidates in the dataset.\n")
 
@@ -62,6 +61,7 @@ incumbency_table <- fb_ads %>%
   summarize(number_of_candidates = n())
 
 knitr::kable(incumbency_table, caption = "Number of Candidates by Incumbency Status")
+incumbency_table
 ```
 
 When we view the dataset since there are 7,014 rows that would indicate the total of candidates in this dataset, since the candidates names are listed out.
@@ -74,16 +74,23 @@ Filter the data to just US House and US Senate races and use this to create a ti
 
 Use `knitr::kable()` to produce a nicely formatted table. In this call, set the `digits` arguments to 3 and use the `col.names` argument to pass a nicer set of names. You can use the following as a template:
 
-```{r eval = FALSE}
-knitr::kable(my_table, col.names = c("Variable 1", "Variable 2", ...))
-```
+
 
 In the writeup, describe which type of candidate sponsored the most promoting ads on average. 
 
  **Rubric**: 3pts for creating `party_incumbent_promote` correctly (autograder); 2pt for a nicely formatted table (PDF); 1pt for changing the column names of the output table (PDF); 1pt for correctly identifying the type of candidate with highest average (PDF)
 
 ## Answer 2
+```{r}
+party_incumbent_promote <- fb_ads |>
+  filter(office %in% c("US Senate", "US House")) |>
+  group_by(party, incumbency) |>
+  summarize(promote_prop = mean (ad_tone_promote, na.rm = TRUE))
 
+party_incumbent_promote
+
+knitr:: kable(party_incumbent_promote, digits = 3, col.names = c("Party", "Incumbent Status", "Self-Promotion Ad Proportion"))
+```
 
 
 \newpage
@@ -99,7 +106,19 @@ Create a histogram of this variable for just the US House races. Save the ggplot
 
 ## Answer 3
 
+```{r}
+library(tidyverse)
+fb_ads <- fb_ads |>
+  mutate(impressions_millions = impressions / 1000000)
 
+plot_q3 <- fb_ads |>
+  filter(office == "US House") |>
+  slice_max(order_by = impressions_millions, n=15) |>
+  ggplot(data = fb_ads, 
+         mapping = aes(x= impressions_millions, 
+                       y = cand_name_last)) |>
+  geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE)
+```
 
 \newpage
 
@@ -121,6 +140,7 @@ You do not need to exactly match the labels, but you should have informative lab
  **Rubric:** 3pts for correct axes (autograder); 3pts for correct data fed into `ggplot` (autograder); 3pts for the correct ordering of the y-axis (PDF); 3pts for fill being mapped to `party` (autograder); 1pt for plot being in knitted output and having informative labels (PDF)
 
 ## Answer 4
+
 ```{r}
 fb_top_plot <- fb_ads_millions |>
   filter(Office == "US House") |>
