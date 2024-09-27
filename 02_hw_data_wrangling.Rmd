@@ -114,13 +114,14 @@ fb_ads <- fb_ads |>
 
 plot_q3 <- fb_ads |>
   filter(office == "US House") |>
-  ggplot(aes(x = impressions_millions, fill = party)) + 
-  geom_histogram(binwidth = 1, color = "black", na.rm = TRUE) +  
+  slice_max(order_by = impressions_millions, n=15) |>
+  ggplot(data = fb_ads, 
+         mapping=aes(x = impressions_millions,
+                     y = cand_name_last)) +
+  geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE) +  
   labs(x = "Impressions (in millions)", 
-       title = "Distribution of Facebook Ad Impressions for US House Candidates") +
-  theme_minimal()
+       title = "Distribution of Facebook Ad Impressions for US House Candidates")
 print(plot_q3)
-
 ```
 
 \newpage
