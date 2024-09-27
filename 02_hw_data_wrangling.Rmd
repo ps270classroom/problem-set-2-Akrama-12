@@ -117,10 +117,9 @@ plot_q3 <- fb_ads |>
   ggplot(aes(x = impressions_millions, fill = party)) + 
   geom_histogram(binwidth = 1, color = "black", na.rm = TRUE) +  
   labs(x = "Impressions (in millions)", 
-       y = "Number of Candidates", 
        title = "Distribution of Facebook Ad Impressions for US House Candidates") +
   theme_minimal()
-
+print(plot_q3)
 
 ```
 
