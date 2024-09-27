@@ -44,8 +44,27 @@ Use `dplyr` functions to create a table with the number of candidates in each ty
  **Rubric**: 2pt for loading the data (autograder); 1pt for describing the number of candidates (PDF); 3pts for creating the table (autograder); 2pt for using `kable()` to nicely format the output (PDF)
 
 ## Answer 1
+```{r}
+library(readr)
+library(dplyr)
+library(knitr)
 
+fb_ads <- 
+  read_csv("data/fb_ads.csv") 
+fb_ads
 
+# Get the number of candidates in the dataset
+num_candidates <- nrow(fb_ads)
+cat("There are", num_candidates, "candidates in the dataset.\n")
+
+incumbency_table <- fb_ads %>%
+  group_by(incumbency) %>%
+  summarize(number_of_candidates = n())
+
+knitr::kable(incumbency_table, caption = "Number of Candidates by Incumbency Status")
+```
+
+When we view the dataset since there are 7,014 rows that would indicate the total of candidates in this dataset, since the candidates names are listed out.
 
 \newpage
 
@@ -102,7 +121,18 @@ You do not need to exactly match the labels, but you should have informative lab
  **Rubric:** 3pts for correct axes (autograder); 3pts for correct data fed into `ggplot` (autograder); 3pts for the correct ordering of the y-axis (PDF); 3pts for fill being mapped to `party` (autograder); 1pt for plot being in knitted output and having informative labels (PDF)
 
 ## Answer 4
-
+```{r}
+fb_top_plot <- fb_ads_millions |>
+  filter(Office == "US House") |>
+  arrange(desc(impressions_millions))|> slice_max(order_by = impressions_millions, n =15) |> 
+  ggplot(aes(x = impressions_millions, y= reorder(cand_name_last, impressions_millions))) + 
+  geom_bar(stat = "identity", aes(fill = party)) +
+  labs(title = "Top 15 House Candidate Facebook Ad Impreesions, 2017-2018", 
+       x= "Facebook Ad Impressions (in millions)", 
+       y = "Candidate Last Name") +
+  scale_fill_manual(values = c(R="red", D="blue"))
+fb_top_plot # in this problem first reorder and then ggplot
+```
 
 
 \newpage
