@@ -112,16 +112,15 @@ library(tidyverse)
 fb_ads <- fb_ads |>
   mutate(impressions_millions = impressions / 1000000)
 
-
+ggplot<-plot_q3
 plot_q3 <- fb_ads |>
   filter(office == "US House") |>
   slice_max(order_by = impressions_millions, n = 15)|>
-  ggplot(data = fb_ads, mapping = aes(x = impressions_millions, y= cand_name_last)) +
-  geom_histogram(stat = "identity", binwidth = 20, color = "black", aes(fill= party), na.rm = TRUE) +
+  ggplot( mapping = aes(x = impressions_millions, y= cand_name_last)) +
+  geom_histogram(stat = "identity", aes(fill= party), na.rm = TRUE) +
   labs(x = "Impressions (in millions)", 
        y = "Number of Candidates", 
-       title = "Distribution of Facebook Ad Impressions for US House Candidates") + 
-  theme_minimal()
+       title = "Distribution of Facebook Ad Impressions for US House Candidates") 
 print(plot_q3)
 ```
 
