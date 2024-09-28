@@ -109,6 +109,7 @@ Create a histogram of this variable for just the US House races. Save the ggplot
 ```{r}
 library(ggplot2)
 library(tidyverse)
+
 fb_ads <- fb_ads |>
   mutate(impressions_millions = impressions / 1000000)
 
@@ -116,15 +117,15 @@ plot_q3 <- fb_ads |>
   filter(office == "US House") |>
   slice_max(order_by = impressions_millions, n = 15) |>
   ggplot(aes(x = impressions_millions,
-             y = reorder(cand_name_last, impressions_millions),  
+             y = reorder(cand_name_last, impressions_millions),
              fill = party)) +
-  geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE) +  
+  geom_col(na.rm = TRUE) +
   labs(x = "Impressions (in millions)", 
        y = "Candidate Last Name",
        title = "Top 15 US House Candidates by Facebook Ad Impressions") +
-  theme_minimal() 
-print(plot_q3)
+  theme_minimal()
 
+print(plot_q3)
 ```
 In the text, describe the shape of the histogram and tell the reader if most of the House candidates had more than 10 million ads impressions on Facebook. 
 
