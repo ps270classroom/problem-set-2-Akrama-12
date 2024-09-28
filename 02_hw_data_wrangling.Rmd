@@ -116,7 +116,7 @@ print(fb_ads)
 ```
 
 ```{r}
-plot_q3 <- ggplot(fb_ads, aes(x= impressions_millions)) + geom_histogram()
+plot_q3 <- ggplot(fb_ads, aes(x= impressions_millions)) + geom_histogram() 
 
 plot_q3
 
