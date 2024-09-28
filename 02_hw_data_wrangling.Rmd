@@ -156,30 +156,36 @@ You do not need to exactly match the labels, but you should have informative lab
 \newpage
 
 
- library(ggplot2)
-library(tidyverse)
-fb_ads <- fb_ads |>
-  mutate(impressions_millions = impressions / 1000000)
-
-plot_q3 <- fb_ads |>
-  filter(office == "US House") |>
-  slice_max(order_by = impressions_millions, n=15) |>
-  ggplot(mapping=aes(x = impressions_millions,
-                     y = cand_name_last)) +
-  geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE) +  
-  labs(x = "Impressions (in millions)", 
-       title = "Distribution of Facebook Ad Impressions for US House Candidates")
-print(plot_q3)
 
 ## Answer 4
 
+```{r}
+library(ggplot2)
+library(tidyverse)
 
-(aes(x = impressions_millions,
-             y = reorder(cand_name_last, impressions_millions),  
-             fill = party)) + geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE) +  labs(x = "Impressions (in millions)", 
-       y = "Candidate Last Name",
+# Create the impressions_millions variable (if not already created)
+fb_ads <- fb_ads |>
+  mutate(impressions_millions = impressions / 1000000)
+
+# Filter for US House candidates and select top 15 by impressions
+fb_top_plot <- fb_ads |>
+  filter(office == "US House") |>
+  slice_max(order_by = impressions_millions, n = 15) |>
+  ggplot(aes(x = impressions_millions, 
+             y = reorder(cand_name_last, impressions_millions),  # Reorder y-axis by impressions
+             fill = party)) +  # Fill color based on party
+  geom_col(na.rm = TRUE) +  # Use geom_col() for pre-calculated values
+  labs(x = "Impressions (in millions)", 
+       y = "Candidate Last Name", 
        title = "Top 15 US House Candidates by Facebook Ad Impressions") +
-  theme_minimal() 
+  scale_fill_manual(values = c(R = "red", D = "blue")) +  # Custom fill colors
+  theme_minimal()  # Clean theme for better presentation
+
+# Output the plot
+fb_top_plot
+```
+
+
 # Code
 
 ```{r print-code, ref.label=knitr::all_labels(), echo = TRUE, eval=FALSE}
