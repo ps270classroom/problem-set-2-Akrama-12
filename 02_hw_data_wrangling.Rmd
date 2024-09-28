@@ -116,9 +116,17 @@ print(fb_ads)
 ```
 
 ```{r}
-plot_q3 <- ggplot(fb_ads, aes(x= impressions_millions)) + geom_histogram() 
+plot_q3 <- fb_ads |>
+  filter(office == "US House") |>
+  ggplot(aes(x = impressions_millions)) +
+  geom_histogram(binwidth = 1, color = "black", fill = "blue", na.rm = TRUE) +  # Set binwidth to 1 million impressions
+  labs(x = "Impressions (in millions)", 
+       y = "Number of Candidates", 
+       title = "Distribution of Facebook Ad Impressions for US House Candidates") +
+  theme_minimal()
 
-plot_q3
+# Print the plot
+print(plot_q3)
 
 ```
 In the text, describe the shape of the histogram and tell the reader if most of the House candidates had more than 10 million ads impressions on Facebook. 
@@ -148,7 +156,30 @@ You do not need to exactly match the labels, but you should have informative lab
 \newpage
 
 
+ library(ggplot2)
+library(tidyverse)
+fb_ads <- fb_ads |>
+  mutate(impressions_millions = impressions / 1000000)
 
+plot_q3 <- fb_ads |>
+  filter(office == "US House") |>
+  slice_max(order_by = impressions_millions, n=15) |>
+  ggplot(mapping=aes(x = impressions_millions,
+                     y = cand_name_last)) +
+  geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE) +  
+  labs(x = "Impressions (in millions)", 
+       title = "Distribution of Facebook Ad Impressions for US House Candidates")
+print(plot_q3)
+
+## Answer 4
+
+
+(aes(x = impressions_millions,
+             y = reorder(cand_name_last, impressions_millions),  
+             fill = party)) + geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE) +  labs(x = "Impressions (in millions)", 
+       y = "Candidate Last Name",
+       title = "Top 15 US House Candidates by Facebook Ad Impressions") +
+  theme_minimal() 
 # Code
 
 ```{r print-code, ref.label=knitr::all_labels(), echo = TRUE, eval=FALSE}
