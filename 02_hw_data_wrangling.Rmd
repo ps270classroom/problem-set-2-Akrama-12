@@ -119,6 +119,7 @@ print(fb_ads)
 plot_q3 <- ggplot(fb_ads, aes(x= impressions_millions)) + geom_histogram()
 
 plot_q3
+
 ```
 In the text, describe the shape of the histogram and tell the reader if most of the House candidates had more than 10 million ads impressions on Facebook. 
 
