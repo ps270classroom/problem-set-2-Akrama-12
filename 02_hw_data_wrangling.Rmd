@@ -167,6 +167,34 @@ library(tidyverse)
 fb_ads <- fb_ads |>
   mutate(impressions_millions = impressions / 1000000)
 
+
+fb_top_plot <- fb_ads |>
+  filter(office == "US House") |>
+  slice_max(order_by = impressions_millions, n = 15) |>
+  ggplot(aes(x = impressions_millions, 
+             y = reorder(cand_name_last, impressions_millions))) + 
+  geom_col(aes(fill = party), na.rm = TRUE) +  # Fill aesthetic set inside geom_col
+  labs(x = "Impressions (in millions)", 
+       y = "Candidate Last Name", 
+       title = "Top 15 US House Candidates by Facebook Ad Impressions") +
+  scale_fill_manual(values = c(R = "red", D = "blue")) +  
+  theme_minimal()  # Minimal theme for clean appearance
+
+
+fb_top_plot
+```
+
+
+# Code
+
+
+library(ggplot2)
+library(tidyverse)
+
+# Create the impressions_millions variable (if not already created)
+fb_ads <- fb_ads |>
+  mutate(impressions_millions = impressions / 1000000)
+
 # Filter for US House candidates and select top 15 by impressions
 fb_top_plot <- fb_ads |>
   filter(office == "US House") |>
@@ -182,11 +210,6 @@ fb_top_plot <- fb_ads |>
 
 # Output the plot
 fb_top_plot
-```
-
-
-# Code
-
 ```{r print-code, ref.label=knitr::all_labels(), echo = TRUE, eval=FALSE}
 
 ```
