@@ -172,9 +172,8 @@ fb_top_plot <- fb_ads |>
   filter(office == "US House") |>
   slice_max(order_by = impressions_millions, n = 15) |>
   ggplot(aes(x = impressions_millions, 
-             y = reorder(cand_name_last, impressions_millions),  # Reorder y-axis by impressions
-             fill = party)) +  # Fill color based on party
-  geom_col(na.rm = TRUE) +  # Use geom_col() for pre-calculated values
+             y = reorder(cand_name_last, impressions_millions))) +  # Only x and y here
+  geom_col(aes(fill = party), na.rm = TRUE) +  # Set fill within geom_col
   labs(x = "Impressions (in millions)", 
        y = "Candidate Last Name", 
        title = "Top 15 US House Candidates by Facebook Ad Impressions") +
