@@ -167,20 +167,20 @@ library(tidyverse)
 fb_ads <- fb_ads |>
   mutate(impressions_millions = impressions / 1000000)
 
-
+# Filter for US House candidates and select top 15 by impressions, and plot the chart
 fb_top_plot <- fb_ads |>
   filter(office == "US House") |>
   slice_max(order_by = impressions_millions, n = 15) |>
   ggplot(aes(x = impressions_millions, 
-             y = reorder(cand_name_last, impressions_millions))) + 
-  geom_col(aes(fill = party), na.rm = TRUE) +  # Fill aesthetic set inside geom_col
-  labs(x = "Impressions (in millions)", 
+             y = reorder(cand_name_last, impressions_millions))) +  # y-axis ordered by impressions
+  geom_col(aes(fill = party), na.rm = TRUE) +  # Fill bars by party
+  labs(x = "Facebook Ad Impressions (in millions)", 
        y = "Candidate Last Name", 
-       title = "Top 15 US House Candidates by Facebook Ad Impressions") +
-  scale_fill_manual(values = c(R = "red", D = "blue")) +  
+       title = "Top 15 House Candidates Facebook Ad Impressions, 2017-2018") +
+  scale_fill_manual(values = c(R = "red", D = "blue")) +  # Custom fill colors for party
   theme_minimal()  # Minimal theme for clean appearance
 
-
+# Output the plot
 fb_top_plot
 ```
 
