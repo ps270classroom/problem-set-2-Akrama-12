@@ -118,7 +118,7 @@ plot_q3 <- fb_ads |>
   ggplot(aes(x = impressions_millions,
              y = reorder(cand_name_last, impressions_millions),  
              fill = party)) +
-  geom_col(na.rm = TRUE) +  
+  geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE) +  
   labs(x = "Impressions (in millions)", 
        y = "Candidate Last Name",
        title = "Top 15 US House Candidates by Facebook Ad Impressions") +
@@ -126,7 +126,9 @@ plot_q3 <- fb_ads |>
 print(plot_q3)
 
 ```
+In the text, describe the shape of the histogram and tell the reader if most of the House candidates had more than 10 million ads impressions on Facebook. 
 
+For me the histogram increases in following from the bottom to the top. Additionally, yes most (all) of the House candidate has more than 10 millions ads impressions on Facebook. 
 \newpage
 
 ## Question 4 (13 points)
@@ -163,19 +165,7 @@ print(plot_q3)
 
 ## Answer 4
 
-```{r}
-fb_top_plot <- fb_ads |>
-  filter(Office == "US House") |>
-  arrange(desc(impressions_millions))|> 
-  slice_max(order_by = impressions_millions, n =15) |> 
-  ggplot(aes(x = impressions_millions, y= reorder(cand_name_last, impressions_millions))) + 
-  geom_bar(stat = "identity", aes(fill = party)) +
-  labs(title = "Top 15 House Candidate Facebook Ad Impreesions, 2017-2018", 
-       x= "Facebook Ad Impressions (in millions)", 
-       y = "Candidate Last Name") +
-  scale_fill_manual(values = c(R="red", D="blue"))
-fb_top_plot # in this problem first reorder and then ggplot
-```
+
 
 
 \newpage
