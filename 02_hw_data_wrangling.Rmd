@@ -116,12 +116,8 @@ print(fb_ads)
 ```
 
 ```{r}
-plot_q3 <- ggplot(aes(x = impressions_millions,
-             y = reorder(cand_name_last, impressions_millions),  
-             fill = party)) + geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE) +  labs(x = "Impressions (in millions)", 
-       y = "Candidate Last Name",
-       title = "Top 15 US House Candidates by Facebook Ad Impressions") +
-  theme_minimal() 
+plot_q3 <- ggplot(fb_ads, aes(x= impressions_millions)) + geom_histogram()
+
 plot_q3
 ```
 In the text, describe the shape of the histogram and tell the reader if most of the House candidates had more than 10 million ads impressions on Facebook. 
@@ -164,7 +160,12 @@ print(plot_q3)
 ## Answer 4
 
 
-
+(aes(x = impressions_millions,
+             y = reorder(cand_name_last, impressions_millions),  
+             fill = party)) + geom_histogram(stat = "identity", aes(fill = party), na.rm = TRUE) +  labs(x = "Impressions (in millions)", 
+       y = "Candidate Last Name",
+       title = "Top 15 US House Candidates by Facebook Ad Impressions") +
+  theme_minimal() 
 
 \newpage
 
