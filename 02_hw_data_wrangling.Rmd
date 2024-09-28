@@ -171,16 +171,14 @@ fb_ads <- fb_ads |>
 fb_top_plot <- fb_ads |>
   filter(office == "US House") |>
   slice_max(order_by = impressions_millions, n = 15) |>
-  ggplot(aes(x = impressions_millions, 
-             y = reorder(cand_name_last, impressions_millions))) +  # y-axis ordered by impressions
-  geom_col(aes(fill = party), na.rm = TRUE) +  # Fill bars by party
+  ggplot(aes(x = impressions_millions, y = reorder(cand_name_last, impressions_millions))) +  # y-axis ordered by impressions
+  geom_bar(stat = "identity", aes(fill = party), na.rm = TRUE) +  # Fill bars by party
   labs(x = "Facebook Ad Impressions (in millions)", 
-       y = "Candidate Last Name", 
+       y = "Candidate Last Name",
        title = "Top 15 House Candidates Facebook Ad Impressions, 2017-2018") +
   scale_fill_manual(values = c(R = "red", D = "blue")) +  # Custom fill colors for party
-  theme_minimal()  # Minimal theme for clean appearance
+  theme_minimal()  
 
-# Output the plot
 fb_top_plot
 ```
 
