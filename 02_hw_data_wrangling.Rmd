@@ -162,19 +162,19 @@ You do not need to exactly match the labels, but you should have informative lab
 ```{r}
 top_cand <- fb_ads |> 
   filter(office == "US House") |>
-  slice_max(order_by = impressions_millions, n=15) |> 
-  mutate(cand_name_last = reorder(cand_name_last,
-                                  impressions_millions))
+  slice_max(order_by = impressions_millions, n = 15) |> 
+  mutate(cand_name_last = reorder(cand_name_last, impressions_millions))
 
+# Create the ggplot with fill mapping in geom_bar
 fb_top_plot <- ggplot(top_cand, aes(x = impressions_millions, 
-                                    y = cand_name_last, 
-                                    fill = party)) +
-  geom_bar(stat = "identity") +
+                                     y = cand_name_last)) +
+  geom_bar(aes(fill = party), stat = "identity") +  # Move fill to geom_bar
   labs(title = "Top 15 House Candidate Facebook Ad Impressions, 2017-2018",
        x = "Facebook Ad Impressions (in millions)",
        y = "Candidate Last Name") +
-  scale_fill_manual(values = c("R" = "red", "D" = "blue"))
+  scale_fill_manual(values = c("R" = "red", "D" = "blue"))  # Keep fill colors
 
+# Display the plot
 fb_top_plot
 ```
 
